@@ -10,6 +10,9 @@ export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
+      console.warn(
+        'Service worker not registered: PUBLIC_URL origin does not match.'
+      );
       return;
     }
 
@@ -17,13 +20,16 @@ export function register(config) {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
+        // Check if a service worker exists
         checkValidServiceWorker(swUrl, config);
+
         navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service worker.'
           );
         });
       } else {
+        // Register SW normally
         registerValidSW(swUrl, config);
       }
     });
@@ -37,6 +43,7 @@ function registerValidSW(swUrl, config) {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (!installingWorker) return;
+
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
@@ -51,7 +58,11 @@ function registerValidSW(swUrl, config) {
       };
     })
     .catch((error) => {
-      console.error('Error during service worker registration:', error);
+      console.error(
+        'Service worker registration failed:',
+        error,
+        '\nYour app will still work offline if previously cached.'
+      );
     });
 }
 
@@ -63,12 +74,17 @@ function checkValidServiceWorker(swUrl, config) {
         response.status === 404 ||
         (contentType != null && contentType.indexOf('javascript') === -1)
       ) {
+        // SW missing or invalid, unregister old SW
         navigator.serviceWorker.ready.then((registration) => {
           registration.unregister().then(() => {
+            console.warn(
+              'No valid service worker found. App will reload without SW.'
+            );
             window.location.reload();
           });
         });
       } else {
+        // SW exists, register normally
         registerValidSW(swUrl, config);
       }
     })
@@ -83,6 +99,6 @@ export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready
       .then((registration) => registration.unregister())
-      .catch((error) => console.error(error.message));
+      .catch((error) => console.error('Error unregistering SW:', error));
   }
 }

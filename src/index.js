@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // <-- import
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -16,5 +16,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
 reportWebVitals();
 
-// Register the service worker
-serviceWorkerRegistration.register();
+if (process.env.NODE_ENV === 'production') {
+  serviceWorkerRegistration.register();
+}
