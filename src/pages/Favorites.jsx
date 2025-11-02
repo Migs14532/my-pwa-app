@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import MovieList from "../components/MovieList";
 
 function Favorites({ onSelectMovie }) {
   const [favorites, setFavorites] = useState([]);
