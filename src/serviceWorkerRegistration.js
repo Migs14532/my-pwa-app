@@ -20,7 +20,6 @@ export function register(config) {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
-        // Check if a service worker exists
         checkValidServiceWorker(swUrl, config);
 
         navigator.serviceWorker.ready.then(() => {
@@ -29,7 +28,6 @@ export function register(config) {
           );
         });
       } else {
-        // Register SW normally
         registerValidSW(swUrl, config);
       }
     });
@@ -74,7 +72,6 @@ function checkValidServiceWorker(swUrl, config) {
         response.status === 404 ||
         (contentType != null && contentType.indexOf('javascript') === -1)
       ) {
-        // SW missing or invalid, unregister old SW
         navigator.serviceWorker.ready.then((registration) => {
           registration.unregister().then(() => {
             console.warn(
@@ -84,7 +81,6 @@ function checkValidServiceWorker(swUrl, config) {
           });
         });
       } else {
-        // SW exists, register normally
         registerValidSW(swUrl, config);
       }
     })

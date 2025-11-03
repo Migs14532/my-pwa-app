@@ -10,7 +10,7 @@ function Header() {
             alt="Logo"
             className="w-10 h-10 rounded-full"
           />
-          <h1 className="text-2xl font-bold">Movie List App</h1>
+          <h1 className="text-2xl font-bold">MovieFlix</h1>
         </Link>
       </div>
 
